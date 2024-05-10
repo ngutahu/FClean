@@ -1,0 +1,384 @@
+﻿@using Newtonsoft.Json
+
+@model ProjectFClean.Controllers.HomeController.HomeIndexViewModel
+
+
+@{
+    ViewBag.Title = "FClean";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+    <div class="container-xxl bg-white p-0">
+        <!-- Search Start -->
+        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+            <div class="container">
+                <div class="row g-2">
+                    <div class="col-md-10">
+                        <div class="row g-2">
+                            <div class="col-md-3">
+                                <select id="gender" class="form-select border-0" name="gender">
+                                    <option value="">Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="location" class="form-select border-0" name="location">
+                                    <option value="">Location</option>
+                                    <option value="Lien Chieu">Liên Chiểu</option>
+                                    <option value="Hai Chau">Hải Châu</option>
+                                    <option value="Ngu Hanh Son">Ngũ Hành Sơn</option>
+                                    <option value="Son Tra">Sơn Trà</option>
+                                    <option value="Cam Le">Cẩm Lệ</option>
+                                    <option value="Thanh Khe">Thanh Khê</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="name" type="text" class="form-control border-0" placeholder="Name" name="name">
+                            </div>
+
+                            <div class="col-md-3">
+                                <select id="service" class="form-select border-0" name="service">
+                                    <option value="">Service</option>
+                                    @foreach (var item in Model.ListService)
+                                    {
+                                        <option value="@Html.DisplayFor(modelItem => item.Name_of_service)">@Html.DisplayFor(modelItem => item.Name_of_service)</option>
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="searchBtn" class="btn btn-dark border-0 w-100"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Search End -->
+        <!-- Heading  Start -->
+        <div class="container-heading">
+            <h1 class="text-center mb-5 wow fadeInUp" id="header-post" data-wow-delay="0.1s">Housekeeper</h1>
+        </div>
+        <!-- Heading  End -->
+        <!-- Sort Select Start-->
+        <select id="sortSelect" class="form-select" aria-label="Default select example">
+            <option selected> Sort</option>
+            <option value="1">Price Ascending</option>
+            <option value="2">Price Decrease</option>
+            <option value="3">Experience Decrease</option>
+        </select>
+        <!-- Sort Select End-->
+        <!-- List HouseKeeper Start-->
+        <div class="listhousekeeper">
+            @foreach (var item in Model.ListHousekeeper)
+            {
+                <a data-hid="@item.HID">
+                    <div class="card">
+                        <img class="card-img-top" src="~/img/@(item.Account.ImgAvatarID)" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Account.Name</h5>
+                            <p class="card-text">Service: @item.Skill</p>
+                            <p class="card-text">Experiment: @item.Experiment</p>
+                            <p id="Price" class="card-text">@item.Price VNĐ</p>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+        <!-- List HouseKeeper End-->
+        <!-- Pangination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = 1, sortOption = Model.SortOption })" aria-label="First">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = i, sortOption = Model.SortOption })">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = Model.TotalPages, sortOption = Model.SortOption })" aria-label="Last">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Pangination -->
+        <!-- Heading Post Start -->
+        <div class="container-heading">
+            <h1 class="text-center mb-5 wow fadeInUp" id="header-post" data-wow-delay="0.1s">Post Listing</h1>
+            @*<a class="btn btn-primary" href="~/Posts/Create" id="btn-add">Create a Post</a>*@
+        </div>
+        <!-- Heading Post End -->
+        <!-- Sort Select Start-->
+        @*<select id="sortSelect" class="form-select" aria-label="Default select example">
+            <option selected> Sort</option>
+            <option value="1">Price Ascending</option>
+            <option value="2">Price Decrease</option>
+            <option value="3">Date Post</option>
+        </select>*@
+        <!-- Sort Select End-->
+        <!--list post start-->
+        <div class="list-post">
+            <div id="postlist">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Author</th>
+                            <th>Price</th>
+                            <th>Location</th>
+                            <th>Date post</th>
+                            <th>Job</th>
+                            <th id="action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var post in Model.ListPost.Take(5))
+                        {
+                            <tr>
+
+                                <td>
+                                    @post.Service.Name_of_service
+                                </td>
+
+                                <td>
+                                    @if (post.Account != null)
+                                    {
+                                        <span>@post.Account.Name</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Unknown</span>
+                                    }
+                                </td>
+                                <td>@post.Price</td>
+                                <td>@post.Location</td>
+                                <td>@post.DatePost</td>
+                                <td>
+                                    @if (post.Account.Role == "Renter")
+                                    {
+                                        <span>Cần tuyển</span>
+                                    }
+                                    else if (post.Account.Role == "Housekeeper")
+                                    {
+                                        <span>Cần việc</span>
+                                    }
+                                </td>
+                                <td id="btn-detail-apply">
+                                    <a href="@Url.Action("DetailsPost", "Posts", new { pid = post.PID })" class="btn btn-primary">Apply Now</a>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+
+              
+                <!-- Pangination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { page = 1, sortOption = Model.SortOption })" aria-label="First">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = i, sortOption = Model.SortOption })">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { page = Model.TotalPages, sortOption = Model.SortOption })" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Pangination -->
+            </div>
+        </div>
+        <!--list post end-->
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+            <!-- JavaScript Libraries -->
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/lib/wow/wow.min.js"></script>
+            <script src="~/lib/easing/easing.min.js"></script>
+            <script src="~/lib/waypoints/waypoints.min.js"></script>
+            <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('#searchBtn').click(function () {
+                        $.ajax({
+                            url: '@Url.Action("Search", "Home")',
+                            type: 'GET',
+                            data: {
+                                gender: $('#gender').val(),
+                                location: $('#location').val(),
+                                name: $('#name').val(),
+                                service: $('#service').val()
+                            },
+                            success: function (result) {
+                                $('.listhousekeeper').html(result);
+                            }
+                        });
+                    });
+                });
+                    $('#sortSelect').change(function () {
+                        var selectedOption = $(this).val();
+                        $.ajax({
+                            url: '@Url.Action("Sort", "Home")',
+                            type: 'GET',
+                            data: { sortOption: selectedOption },
+                            success: function (result) {
+                                $('.listhousekeeper').html(result);
+                            }
+                        });
+                    });
+
+                 $(document).on('click', '.listhousekeeper a', function (e) {
+                    e.preventDefault();
+                    var HID = $(this).data('hid');
+                    window.location.href = '@Url.Action("Details", "Home")' + '?HID=' + HID;
+                });
+
+                $(document).on('click', '.apply', function (e) {
+                    e.preventDefault();
+                    var PID = $(this).data('pid');
+                    window.location.href = $(this).attr('href');
+                });
+
+                $(document).ready(function () {
+                    // Hiển thị chỉ 5 hàng ban đầu
+                    showPosts(1);
+
+                    // Xử lý khi người dùng chọn trang mới
+                    $('body').on('click', '.pagination .page-link', function (e) {
+                        e.preventDefault();
+                        var page = $(this).data('page');
+                        showPosts(page);
+                    });
+                });
+
+                // Hàm hiển thị các bài post cho một trang cụ thể
+                function showPosts(page) {
+                    var pageSize = 5; // Số bài post trên mỗi trang
+                    var startIndex = (page - 1) * pageSize;
+                    var endIndex = startIndex + pageSize;
+
+                    // Ẩn tất cả các hàng của bảng
+                    $('#postList table tbody tr').hide();
+
+                    // Hiển thị các hàng cho trang hiện tại
+                    $('#postList table tbody tr').slice(startIndex, endIndex).show();
+
+                    // Đánh dấu trang hiện tại trên phân trang
+                    $('.pagination .page-item').removeClass('active');
+                    $('.pagination .page-item').eq(page - 1).addClass('active');
+                }
+
+                                
+            </script>
+
+
+            <!-- Template Javascript -->
+            <script src="~/js/main.js"></script>
+
+        </body>
+
+        </html>
+        <style>
+            .Main-Pagination {
+                display: flex;
+                justify-content: center;
+            }
+            a{
+                cursor: pointer;
+            }
+            #Price {
+                position: absolute;
+                bottom: 10px;
+                right: 5px;
+                background-color: #f0564a;
+                color: #fff;
+                border-radius: 14px;
+                padding: 6px 12px 6px;
+                font-size: 13px;
+                color: white;
+                margin-top: 10px;
+                font-size: 14px;
+                font-weight: bolder;
+            }
+
+            .card-img-top {
+                width: 288px;
+                height: 276px;
+                border-radius: 14px;
+            }
+
+            .card {
+                border-radius: 14px;
+                margin-right: 121px;
+                margin-bottom: 50px;
+            }
+
+            .listhousekeeper {
+                display: flex;
+                margin: 40px;
+                flex-wrap: wrap;
+            }
+
+            #sortSelect {
+                margin-bottom: 10px;
+                width: 100px;
+                border-radius: 10px;
+            }
+
+            .card-text {
+                color: gray;
+            }
+            tbody tr:nth-child(even) {
+                background-color: white;
+            }
+
+            tbody tr:nth-child(odd) {
+                background-color: white;
+            }
+
+            .table th,
+            .table td {
+                padding: 10px;
+                text-align: justify;
+                font-size: 20px;
+                color: black;
+            }
+
+            #action {
+                text-align: center;
+            }
+            #btn-detail-apply {
+                display: flex;
+                justify-content: space-around;
+                border: none;
+            }
+            .container-heading {
+                display: flex;
+                justify-content: center;
+            }
+
+        </style>

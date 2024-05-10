@@ -1,0 +1,456 @@
+﻿@model ProjectFClean.Models.Account
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>Registration Form</title>
+
+    <!-- Icons font CSS-->
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="~/css/main.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+    <div class="background-register">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">Registration Form</h2>
+                    @using (Html.BeginForm("Register", "Accounts"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row row-space">
+                            @Html.TextBoxFor(model => model.Approve, new { @class = "input--style-4", Value = "No", Type = "hidden" })
+                            <div class="col-2">
+                                <div class="input-group">
+                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "lable" })
+                                    @Html.TextBoxFor(model => model.Name, new { @class = "input--style-4" })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger", id = "Name" })
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    @Html.LabelFor(model => model.Identify_Number, htmlAttributes: new { @class = "lable" })
+                                    @Html.TextBoxFor(model => model.Identify_Number, new { @class = "input--style-4" })
+                                    @Html.ValidationMessageFor(model => model.Identify_Number, "", new { @class = "text-danger", id = "Identify_Number" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "lable" })
+                                    <div class="input-group-icon">
+                                        @Html.TextBoxFor(model => model.Phone, new { @class = "input--style-4" })
+                                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger", id = "Phone" })
+                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "lable" })
+                                    <div class="input-group-icon">
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "input--style-4" })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger", id = "Email" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "lable" })
+                                    <div class="input-group-icon">
+                                        @Html.TextBoxFor(model => model.Password, new { @class = "input--style-4", type = "password" })
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger", id = "Password" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "lable", id = "label-role-gender" })
+                                @Html.DropDownListFor(
+                                    model => model.Role,
+                                    new SelectList(new List<SelectListItem>() // List of options
+                                    {
+                                           new SelectListItem { Text = "Renter", Value = "Renter" },
+                                           new SelectListItem { Text = "Housekeeper", Value = "Housekeeper" }
+
+                                    }, "Value", "Text"),
+                                    htmlAttributes: new { @class = "rs-select2 js-select-simple select--no-search", id = "Role" })
+                                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                            </div>
+                            <div id="renterFields" class="additional-fields">
+                                <div class="row row-space">
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.Renters.FirstOrDefault().Age, htmlAttributes: new { @class = "lable" })
+                                            @Html.TextBoxFor(model => model.Renters.FirstOrDefault().Age, new { @class = "input--style-4" })
+                                            @Html.ValidationMessageFor(model => model.Renters.FirstOrDefault().Age, "", new { @class = "text-danger", id = "Age" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.Renters.FirstOrDefault().Gender, htmlAttributes: new { @class = "lable", id = "label-role-gender" })
+                                            @Html.DropDownListFor(
+                                                model => model.Renters.FirstOrDefault().Gender,
+                                                new SelectList(new List<SelectListItem>() // List of options
+                                                {
+                                                   new SelectListItem { Text = "Other", Value = "Other" },
+                                                   new SelectListItem { Text = "Female", Value = "Female" },
+                                                   new SelectListItem { Text = "Male", Value = "Male" }
+                                                }, "Value", "Text"),
+                                                htmlAttributes: new { @class = "rs-select2 js-select-simple select--no-search" })
+                                            @Html.ValidationMessageFor(model => model.Renters.FirstOrDefault().Gender, "", new { @class = "text-danger" })
+                                        </div>
+
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.Renters.FirstOrDefault().Description, htmlAttributes: new { @class = "lable" })
+                                            @Html.TextBoxFor(model => model.Renters.FirstOrDefault().Description, new { @class = "input--style-4" })
+                                            @Html.ValidationMessageFor(model => model.Renters.FirstOrDefault().Description, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.Renters.FirstOrDefault().Address, htmlAttributes: new { @class = "lable" })
+                                            @Html.DropDownListFor(
+                                                model => model.Renters.FirstOrDefault().Address,
+                                                new SelectList(new List<SelectListItem>() // List of options
+                                                {
+                                                   new SelectListItem { Text = "Ngu Hanh Son", Value = "Ngu Hanh Son" },
+                                                   new SelectListItem { Text = "Cam Le", Value = "Cam Le" },
+                                                   new SelectListItem { Text = "Hai Chau", Value = "Hai Chau" },
+                                                   new SelectListItem { Text = "Son Tra", Value = "Son Tra" },
+                                                   new SelectListItem { Text = "Hoa Vang", Value = "Hoa Vang" },
+                                                   new SelectListItem { Text = "Thanh Khe", Value = "Thanh Khe" }
+                                                }, "Value", "Text"),
+                                                htmlAttributes: new { @class = "rs-select2 js-select-simple select--no-search" })
+                                            @Html.ValidationMessageFor(model => model.Renters.FirstOrDefault().Address, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="housekeeperFields" class="additional-fields">
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        @Html.LabelFor(model => model.Housekeepers.FirstOrDefault().Age, htmlAttributes: new { @class = "lable" })
+                                        @Html.TextBoxFor(model => model.Housekeepers.FirstOrDefault().Age, new { @class = "input--style-4" })
+                                        @Html.ValidationMessageFor(model => model.Housekeepers.FirstOrDefault().Age, "", new { @class = "text-danger", id = "Age" })
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        @Html.LabelFor(model => model.Housekeepers.FirstOrDefault().Gender, htmlAttributes: new { @class = "lable" })
+                                        @Html.DropDownListFor(
+                                            model => model.Housekeepers.FirstOrDefault().Gender,
+                                            new SelectList(new List<SelectListItem>() // List of options
+                                            {
+                                               new SelectListItem { Text = "Other", Value = "Other" },
+                                               new SelectListItem { Text = "Female", Value = "Female" },
+                                               new SelectListItem { Text = "Male", Value = "Male" }
+                                            }, "Value", "Text"),
+                                            htmlAttributes: new { @class = "rs-select2 js-select-simple select--no-search" ,id="Gender-Housekeeper" })
+                                        @Html.ValidationMessageFor(model => model.Housekeepers.FirstOrDefault().Gender, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        @Html.LabelFor(model => model.Housekeepers.FirstOrDefault().Price, htmlAttributes: new { @class = "lable" })
+                                        @Html.TextBoxFor(model => model.Housekeepers.FirstOrDefault().Price, new { @class = "input--style-4" })
+                                        @Html.ValidationMessageFor(model => model.Housekeepers.FirstOrDefault().Price, "", new { @class = "text-danger", id = "Price" })
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        @Html.LabelFor(model => model.Housekeepers.FirstOrDefault().Address, htmlAttributes: new { @class = "lable" })
+                                        @Html.DropDownListFor(
+                                            model => model.Housekeepers.FirstOrDefault().Address,
+                                            new SelectList(new List<SelectListItem>() // List of options
+                                            {
+                                               new SelectListItem { Text = "Ngu Hanh Son", Value = "Ngu Hanh Son" },
+                                               new SelectListItem { Text = "Cam Le", Value = "Cam Le" },
+                                               new SelectListItem { Text = "Hai Chau", Value = "Hai Chau" },
+                                               new SelectListItem { Text = "Son Tra", Value = "Son Tra" },
+                                               new SelectListItem { Text = "Hoa Vang", Value = "Hoa Vang" },
+                                               new SelectListItem { Text = "Thanh Khe", Value = "Thanh Khe" }
+                                            }, "Value", "Text"),
+                                            htmlAttributes: new { @class = "rs-select2 js-select-simple select--no-search" })
+                                        @Html.ValidationMessageFor(model => model.Housekeepers.FirstOrDefault().Address, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        @Html.LabelFor(model => model.Housekeepers.FirstOrDefault().Description, htmlAttributes: new { @class = "lable" })
+                                        @Html.TextBoxFor(model => model.Housekeepers.FirstOrDefault().Description, new { @class = "input--style-4" })
+                                        @Html.ValidationMessageFor(model => model.Housekeepers.FirstOrDefault().Description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        @Html.LabelFor(model => model.Housekeepers.FirstOrDefault().Skill, htmlAttributes: new { @class = "lable" })
+                                        @Html.DropDownListFor(
+                                        model => model.Housekeepers.FirstOrDefault().Skill,
+                                        new SelectList(new List<SelectListItem>() // List of options
+                                        {
+                                           new SelectListItem { Text = "Cleaning", Value = "Cleaning" },
+                                           new SelectListItem { Text = "Child care", Value = "Child care" },
+                                           new SelectListItem { Text = "Elderly care", Value = "Elderly care" },
+                                           new SelectListItem { Text = "Patient care", Value = "Patient care" },
+                                           new SelectListItem { Text = "Home cooking", Value = "Home cooking" },
+                                           new SelectListItem { Text = "Grocery", Value = "Grocery" },
+                                           new SelectListItem { Text = "Laundry", Value = "Laundry" }
+                                        }, "Value", "Text"),
+                                        htmlAttributes: new { @class = "rs-select2 js-select-simple select--no-search" })
+                                        @Html.ValidationMessageFor(model => model.Housekeepers.FirstOrDefault().Skill, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @if (ViewBag.Success != null)
+                            {
+                                <div class="alert alert-success">
+                                    @ViewBag.Success
+                                </div>
+                            }
+                        </div>
+                        <div class="p-t-15">
+                            <button id="submitBtn" class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+                            <span class="login-link">I have account <a href="/Accounts/Login">Login Now</a>.</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <!-- Main JS-->
+    <script src="~/js/global.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Ẩn tất cả các textbox ban đầu
+            $('.additional-fields').hide();
+            $('#renterFields').show();
+            // Xử lý sự kiện thay đổi của dropdown
+            $('#Role').change(function () {
+                // Lấy giá trị của lựa chọn được chọn
+                var selectedOption = $(this).val();
+
+                // Ẩn tất cả các textbox hiện có
+
+
+                // Hiển thị các textbox tương ứng với lựa chọn được chọn
+                if (selectedOption === 'Housekeeper') {
+                    $('#housekeeperFields').show();
+                    $('#renterFields').hide();
+                    // Validate Age
+                    var age = $('#Age').val();
+                    if (age < 18 || age > 70) {
+                        $('#Age').siblings('.text-danger').text('Age must be between 18 and 70');
+                        isValid = false;
+                    } else {
+                        $('#Age').siblings('.text-danger').text('');
+                    }
+
+                    // Validate Price
+                    var price = $('#Price').val();
+                    if (!/^\d+$/.test(price)) {
+                        $('#Price').siblings('.text-danger').text('Price must be a positive integer');
+                        isValid = false;
+                    } else {
+                        $('#Price').siblings('.text-danger').text('');
+                    }
+                } else if (selectedOption === 'Renter') {
+                    $('#renterFields').show();
+                    
+                    $('#housekeeperFields').hide();
+
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#submitBtn').click(function (e) {
+                e.preventDefault();
+                if (validateForm()) {
+                    $('form').submit();
+                }
+            });
+
+            function validateForm() {
+                var isValid = true;
+
+                // Validate Identify Number
+                var identifyNumber = $('#Identify_Number').val();
+                if (identifyNumber.length !== 12 || !(/^\d+$/.test(identifyNumber))) {
+                    $('#Identify_Number').siblings('.text-danger').text('Identify number must be a 12-digit number');
+                    isValid = false;
+                } else {
+                    $('#Identify_Number').siblings('.text-danger').text('');
+                }
+
+                var phone = $('#Phone').val();
+                if (!/^0\d{9}$/.test(phone)) {
+                    $('#Phone').siblings('.text-danger').text('Invalid phone number format');
+                    isValid = false;
+                } else {
+                    $('#Phone').siblings('.text-danger').text('');
+                }
+
+
+                var email = $('#Email').val();
+                if (!/^\w+([\.-]?\w+)*@@gmail\.com$/.test(email)) {
+                    $('#Email').siblings('.text-danger').text('Invalid email format');
+                    isValid = false;
+                } else {
+                    $('#Email').siblings('.text-danger').text('');
+                }
+
+                var password = $('#Password').val();
+                if (password.length < 8) {
+                    $('#Password').siblings('.text-danger').text('Password must be at least 8 characters long');
+                    isValid = false;
+                } else {
+                    $('#Password').siblings('.text-danger').text('');
+                }
+
+                return isValid;
+            }
+        });
+    </script>
+    
+</body>
+
+</html>
+<style>
+    .text-danger {
+        color: red;
+    }
+    /* Cân đối các phần tử input và label */
+    .input-group {
+        margin-bottom: 10px;
+    }
+
+    .lable {
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    /* Đảm bảo các cột cân đối */
+    .col-2 {
+        width: 48%;
+        float: left;
+        margin-right: 2%;
+    }
+
+        /* Xóa margin của cột cuối cùng trong mỗi hàng */
+        .col-2:last-child {
+            margin-right: 0;
+        }
+
+    /* Định dạng thông báo lỗi */
+    .text-danger {
+        font-size: 12px;
+    }
+
+
+    /* Định dạng thành công và lỗi thông báo */
+    .alert {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+    /* Định dạng ô dropdown */
+    .input-group select {
+        width: 100%;
+        height: 50px; /* Đảm bảo chiều cao giống với ô input */
+        padding: .375rem .75rem; /* Đảm bảo padding giống với ô input */
+        font-size: 1rem; /* Đảm bảo cỡ chữ giống với ô input */
+        line-height: 1.5; /* Đảm bảo line-height giống với ô input */
+        border: 1px solid #ced4da; /* Đảm bảo viền giống với ô input */
+        border-radius: .25rem; /* Đảm bảo bo tròn giống với ô input */
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; /* Hiệu ứng hover giống với ô input */
+    }
+
+    select#Role {
+        width: 100%;
+        height: 50px; /* Đảm bảo chiều cao giống với ô input */
+        padding: .375rem .75rem; /* Đảm bảo padding giống với ô input */
+        font-size: 1rem; /* Đảm bảo cỡ chữ giống với ô input */
+        line-height: 1.5; /* Đảm bảo line-height giống với ô input */
+        border: 1px solid #ced4da; /* Đảm bảo viền giống với ô input */
+        border-radius: .25rem; /* Đảm bảo bo tròn giống với ô input */
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; /* Hiệu ứng hover giống với ô input */
+        margin-left:10px;
+    }
+    .p-t-15 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    select#Gender {
+        margin-left: 10px;
+    }
+    #label-role-gender {
+        margin-left: 10px;
+    }
+    body {
+        background-color: #effdf5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .card-4 .card-body {
+        box-shadow: 0 0 21px rgba(0, 0, 0, 0.5);
+        padding: 57px 65px;
+        border-radius:10px;
+    }
+</style>

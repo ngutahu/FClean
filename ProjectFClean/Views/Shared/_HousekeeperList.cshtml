@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ProjectFClean.Models.Housekeeper>
+
+@foreach (var housekeeper in Model)
+{
+    <a data-hid="@housekeeper.HID">
+        <div class="card">
+            <img class="card-img-top" src="/img/@(housekeeper.Account.ImgAvatarID)" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@housekeeper.Account.Name</h5>
+                <p class="card-text">Service: @housekeeper.Skill</p>
+                <p class="card-text">Experiment: @housekeeper.Experiment</p>
+                <p id="Price" class="card-text">@housekeeper.Price VNĐ</p>
+            </div>
+        </div>
+    </a>
+}
+
+
+<style>
+    #Price {
+        position: absolute;
+        bottom: 10px;
+        right: 5px;
+        background-color: #f0564a;
+        color: #fff;
+        border-radius: 14px;
+        padding: 6px 12px 6px;
+        font-size: 13px;
+        color: white;
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: bolder;
+    }
+
+    .card-img-top {
+        width: 288px;
+        height: 276px;
+        border-radius: 14px;
+    }
+
+    .card {
+        border-radius: 14px;
+        margin-right: 121px;
+        margin-bottom: 50px;
+    }
+
+    .listhousekeeper {
+        display: flex;
+        margin: 40px;
+        flex-wrap: wrap;
+    }
+
+    #sortSelect {
+        margin-bottom: 10px;
+        width: 100px;
+        border-radius: 10px;
+    }
+
+    .card-text {
+        color: gray;
+    }
+</style>

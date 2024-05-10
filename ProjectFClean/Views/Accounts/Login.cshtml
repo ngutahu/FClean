@@ -1,0 +1,143 @@
+﻿@model ProjectFClean.Models.Account
+
+@{
+    Layout = null;
+}
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>Login Form</title>
+
+    <!-- Icons font CSS-->
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="~/css/main.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+    <div class="background-login">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">Login</h2>
+                    @using (Html.BeginForm("Login", "Accounts"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "lable" })
+                                    <div class="input-group-icon">
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "input--style-4", id = "Email" })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "lable" })
+                                    <div class="input-group-icon">
+                                        @Html.TextBoxFor(model => model.Password, new { @class = "input--style-4", type = "password", id = "Password" })
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @if (ViewBag.SuccessMessage != null)
+                            {
+                                <div class="alert alert-success" style="color:green">
+                                    @ViewBag.SuccessMessage
+                                </div>
+                            }
+
+                        </div>
+                        <div class="form-group">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @if (ViewBag.LoginFail != null)
+                            {
+                                <div class="alert alert-danger" style="color:red">
+                                    @ViewBag.LoginFail
+                                </div>
+                            }
+                        </div>
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+                            <span class="signup-link"> <a href="/Accounts/Register">Register?</a>.</span>
+                            <span class="signup-link"><a href="/ResetPassword/Index">Forgot Password?</a>.</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <script src="~/vendor/datepicker/moment.min.js"></script>
+    <script src="~/vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="~/js/global.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function () {
+                var email = $('#Email').val();
+                var password = $('#Password').val();
+                var emailPattern = /^[a-zA-Z0-9._-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+
+                // Kiểm tra định dạng email
+                if (!emailPattern.test(email)) {
+                    alert('Please enter a valid email format.');
+                    return false;
+                }
+
+                // Kiểm tra độ dài của password
+                //if (password.length < 6) {
+                //    alert('Password must be at least 6 characters.');
+                //    return false;
+                //}
+
+                // Nếu tất cả điều kiện đều đúng, cho phép submit form
+                return true;
+            });
+        });
+    </script>
+    <style>
+        .signup-link {
+            margin-left: 50px; /* Điều chỉnh khoảng cách bên trái */
+        }
+        body {
+            background-color: #effdf5;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        .card-4 .card-body {
+            box-shadow: 0 0 21px rgba(0, 0, 0, 0.5);
+            padding: 57px 65px;
+            border-radius: 10px;
+        }
+    </style>
+</body>

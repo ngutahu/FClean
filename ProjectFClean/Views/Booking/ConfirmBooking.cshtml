@@ -1,0 +1,105 @@
+﻿@model List<ProjectFClean.Models.Compact>
+    @{ 
+        Layout = "~/Views/Shared/_LayoutDetails.cshtml";
+    }
+<!DOCTYPE html>
+<html>
+<head>
+
+    
+    
+    <!-- Các thẻ <head> ở đây -->
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Confirm Booking</h2>
+
+        @foreach (var compact in Model)
+        {
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4>Housekeeper Information</h4>
+                    <p>Name: @compact.Housekeeper.Account.Name</p>
+                    <p>Phone: @compact.Housekeeper.Account.Phone</p>
+                    <p>Money: @compact.Housekeeper.Account.Money</p>
+                    <p>Address: @compact.Housekeeper.Address</p>
+                </div>
+                <div class="col-md-6">
+                    <h4>Renter Information</h4>
+                    <p>Name: @compact.Renter.Account.Name</p>
+                    <p>Phone: @compact.Renter.Account.Phone</p>
+                    <p>Gmail: @compact.Renter.Account.Email</p>
+                    <p>Address: @compact.Renter.Address</p>
+                </div>
+            </div>
+
+            <h4>Compact Information</h4>
+            <p>Signed Date: @compact.Signed_Date</p>
+            <p>Start Date: @compact.Start_Date</p>
+            <p>End Date: @compact.End_Date</p>
+            <p>Work Time: @compact.Work_Time</p>
+            <p>Total Price: @compact.Total_Price</p>
+            <p>Status: @compact.Status</p>
+
+            <form id="formCompact_@compact.CID" action="@Url.Action("UpdateStatus", "Booking")" method="post class="d-flex justify-content-center">
+                <input type="hidden" name="CompactId" value="@compact.CID" />
+                <button type="button" onclick="confirmBooking(@compact.CID)" class="btn btn-success mr-2">Confirm</button>
+                <button type="button" onclick="cancelBooking(@compact.CID)" class="btn btn-danger">Cancel</button>
+            </form>
+            <hr />
+        }
+
+        @if (Model.Count == 0)
+        {
+            <div class="container">
+                <p>No contracts to display.</p>
+            </div>
+        }
+    </div>
+    
+
+
+    <script>
+        window.onload = function () {
+            var contracts = document.querySelectorAll('.container');
+            if (contracts.length === 0) {
+                alert('No contracts to display.');
+            }
+        };
+        function confirmBooking(compactId) {
+            var confirmed = confirm("You have signed Compact ID " + compactId);
+            // Gửi yêu cầu xác nhận đặt phòng tới server
+            fetch(`/Booking/UpdateStatus?compactId=${compactId}&status=confirmed`, {
+                method: 'POST'
+            }).then(response => {
+                if (response.ok) {
+                    // Chuyển hướng về trang chủ
+                    window.location.href = '/Booking/ConfirmBooking';
+                } else {
+                    // Xử lý lỗi nếu cần
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function cancelBooking(compactId) {
+            // Gửi yêu cầu hủy đặt phòng tới server
+            fetch(`/Booking/UpdateStatus?compactId=${compactId}&status=cancelled`, {
+                method: 'POST'
+            }).then(response => {
+                if (response.ok) {
+                    // Chuyển hướng về trang chủ
+                    window.location.href = '/Booking/ConfirmBooking';
+                } else {
+                    // Xử lý lỗi nếu cần
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+    </script>
+
+</body>
+</html>

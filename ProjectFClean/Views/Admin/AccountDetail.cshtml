@@ -1,0 +1,84 @@
+﻿@model ProjectFClean.Models.Account
+
+@{
+    ViewBag.Title = "AccountDetail";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h2>Account Detail</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Name:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            Identify number:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Identify_Number)
+        </dd>
+        <dt>
+            Phone:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt>
+            Email:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            Password:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt>
+            Role:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+
+        <!-- Các trường dữ liệu khác -->
+
+        @if (ViewBag.RenterDetail != null)
+        {
+            var renterDetail = (ProjectFClean.Models.Renter)ViewBag.RenterDetail;
+            <dt>Money:</dt>
+            <dd>@renterDetail.Account.Money</dd>
+            <dt>Address:</dt>
+            <dd>@renterDetail.Address</dd>
+        }
+        @if (ViewBag.HousekeeperDetail != null)
+        {
+            var housekeeperDetail = (ProjectFClean.Models.Housekeeper)ViewBag.HousekeeperDetail;
+            <dt>Age:</dt>
+            <dd>@housekeeperDetail.Age</dd>
+            <dt>Gender:</dt>
+            <dd>@housekeeperDetail.Gender</dd>
+            <dt>Price:</dt>
+            <dd>@housekeeperDetail.Price</dd>
+            <dt>Skill:</dt>
+            <dd>@housekeeperDetail.Skill</dd>
+            <dt>Experiment:</dt>
+            <dd>@housekeeperDetail.Experiment</dd>
+            <dt>Description:</dt>
+            <dd>@housekeeperDetail.Description</dd>
+            <dt>Money:</dt>
+            <dd>@housekeeperDetail.Account.Money</dd>
+            <dt>Address:</dt>
+            <dd>@housekeeperDetail.Address</dd>
+        }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AccountID }) |
+    @Html.ActionLink("Back to List", "User")
+</p>

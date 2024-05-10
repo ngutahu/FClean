@@ -1,0 +1,51 @@
+﻿@model ProjectFClean.Controllers.PostsController.PostIndexViewModel
+
+@{
+    Layout = null; // Không sử dụng layout
+}
+
+@* Dạng danh sách các bài đăng *@
+@foreach (var post in Model.ListPost)
+{
+    <tr>
+        <td>
+            @post.Service.Name_of_service
+        </td>
+        <td>
+            @if (post.Account != null)
+            {
+                <span>@post.Account.Name</span>
+            }
+            else
+            {
+                <span>Unknown</span>
+            }
+        </td>
+        <td>@post.Price</td>
+        <td>@post.Location</td>
+        <td>@post.DatePost</td>
+        <td>
+            @if (post.Account.Role == "Renter")
+            {
+                <span>Cần tuyển</span>
+            }
+            else if (post.Account.Role == "Housekeeper")
+            {
+                <span>Cần việc</span>
+            }
+        </td>
+        <td id="btn-detail-apply">
+            <a href="@Url.Action("DetailsPost", "Posts", new { pid = post.PID })" class="btn btn-primary">Apply Now</a>
+            @*<a href="#" class="btn btn-primary apply" data-pid="@post.PID">Apply Now</a>*@
+        </td>
+    </tr>
+}
+
+<script>
+    // Xử lý sự kiện click trên nút "Apply Now"
+    $(document).on('click', '.apply', function (e) {
+        e.preventDefault();
+        var PID = $(this).data('pid');
+        window.location.href = $(this).attr('href') + '?pid=' + PID;
+    });
+</script>

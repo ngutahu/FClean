@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ProjectFClean.Models.Feedback>
+
+@{
+    ViewBag.Title = "FeedbackHub";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>FeedbackHub</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Feedback type</th>
+            <th>Comment</th>
+            <th>Image</th>
+            <th>Rate</th>
+            <th>Compact ID</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var feedback in Model)
+        {
+            <tr>
+                <td>@feedback.FeedbackType</td>
+                <td>@feedback.Comment</td>
+                <td>@feedback.ImageURL</td>
+                <td>@feedback.Rate</td>
+                <td>@feedback.CID</td>
+               
+                <td>
+                    @using (Html.BeginForm("ApproveFeedback", "Admin", new { feedbackId = feedback.FbID }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-primary">Approve</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

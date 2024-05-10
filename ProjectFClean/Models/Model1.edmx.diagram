@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a2e252f3c65b4aeaa645402bf4d3b670" Name="Diagram1">
+        <EntityTypeShape EntityType="ProjectFClean1Model.Account" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Admin" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Apply" Width="1.5" PointX="6" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.ChatRoom" Width="1.5" PointX="3" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Comment" Width="1.5" PointX="5.25" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Compact" Width="1.5" PointX="5.25" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Feedback" Width="1.5" PointX="7.5" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Housekeeper" Width="1.5" PointX="3" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Notification" Width="1.5" PointX="3" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Payment" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Post" Width="1.5" PointX="8" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Renter" Width="1.5" PointX="3" PointY="32.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.RepliComment" Width="1.5" PointX="8.5" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Reply" Width="1.5" PointX="5.25" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Service" Width="1.5" PointX="5.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectFClean1Model.Transaction" Width="1.5" PointX="3" PointY="35.75" IsExpanded="true" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Admin_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Apply_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_ChatRoom_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Comment_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Housekeeper_Account2" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Notification_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Notification_Account1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Post_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Renter_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_RepliComment_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Reply_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Transactions_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Transactions_Account1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Apply_Post" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Reply_ChatRoom" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Comment_Housekeeper" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_RepliComment_Comment" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Compact_Housekeeper" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Compact_Renter" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Compact_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Feedback_Compact" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_RepliComment_Housekeeper" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectFClean1Model.FK_Post_Service" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

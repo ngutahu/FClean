@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ProjectFClean.Models.Transaction>
+@using ProjectFClean.Models;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutDetails.cshtml";
+}
+@{
+    var account = Session["Account"] as ProjectFClean.Models.Account;
+    ProjectFClean1Entities db = new ProjectFClean1Entities();
+}
+
+<body>
+    <div class="container">
+        <h2 style="text-align: center; margin-top: 20px;">Transaction History</h2>
+        <br />
+        <br />
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Note)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Transaction_Money)
+                </th>
+                <th>
+                    Sender
+                </th>
+                <th>
+                    Receiver
+                </th>
+                <th></th>
+            </tr>
+
+            @if (Model != null && account != null)
+            {
+                foreach (var item in Model)
+                {
+                    if (item.SenderId == account.AccountID)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Note)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Transaction_Money)
+                            </td>
+                            <td>
+                                @db.Accounts.SingleOrDefault(a => a.AccountID == item.SenderId).Name
+                            </td>
+                            <td>
+                                @db.Accounts.SingleOrDefault(a => a.AccountID == item.ReceiveId).Name
+                            </td>
+
+                        </tr>
+                    }
+                }
+            }
+            else
+            {
+                <tr>You don't have any transactions!</tr>
+            }
+
+
+        </table>
+    </div>
+</body>
+<style>
+    .container{
+        margin-bottom:300px;
+    }
+</style>

@@ -1,0 +1,306 @@
+﻿
+@model IEnumerable<ProjectFClean.Models.ChatRoom>
+
+@{
+    ViewData["Title"] = "Chat Room";
+    Layout = "~/Views/Shared/_LayoutDetails.cshtml";
+}
+
+
+
+
+<p>
+    @* <a asp-action="Create">Create New</a> *@
+</p>
+@*<table class="table text-center">
+
+        <tbody>
+            @foreach (var chat in Model)
+            {
+                <tr style="border:2px solid black">
+                    <td>
+                        <span style="margin-right:15px; font-size:16px;color:green">
+                            @chat.Account.Name
+                        </span>
+                    </td>
+                    <td>
+                        <span style="font-size:20x">
+                            @Html.DisplayFor(modelItem => chat.Text)
+                        </span>
+                    </td>
+                    <td>
+                        <span style="margin-left:15px">
+                            @Html.DisplayFor(modelItem => chat.ChatDate)
+                        </span>
+                    </td>
+                    @foreach (var reply in chat.Replies)
+                    {
+                        <br />
+                        <td>
+                            <span style="margin-right:15px; font-size:16px;color:green">
+                                @reply.Account.Name
+                            </span>
+                        </td>
+                        <td>
+                            <span>@reply.Text</span>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+
+    </table>*@
+@*<tbody>
+        <div class="post">
+            @using (Html.BeginForm("CreateChat", "ChatRoom", FormMethod.Post))
+            {
+                <input class="inputText" type="text" name="Text" placeholder="Chat here"></input>
+                //<input type="hidden" name="CID" value="@chatRoom.Id" />
+                <input type="submit" value="Reply" class="btn btn-success" />
+            }
+        </div>
+        @foreach (var chatRoom in Model)
+        {
+            <div class="col-md-6 chatt" style="justify-content:center; align-items:center">
+                <div class="list-group rounded">
+                    <a class="list-group-item list-group-item-action list-group-item-light rounded-0">
+                        <div class="media">
+                            <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
+                            <div class="media-body ml-4">
+                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                    <h6 class="mb-0">@chatRoom.Account.Name</h6><small class="small font-weight-bold"> @Html.DisplayFor(modelItem => chatRoom.ChatDate)</small>
+                                </div>
+                                <p class="font-italic mb-0 text-small"> @Html.DisplayFor(modelItem => chatRoom.Text)</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @foreach (var repli in chatRoom.Replies)
+                {
+
+                    <div class="list-group rounded-0">
+                        <a class="list-group-item list-group-item-action list-group-item-light rounded-0">
+                            <div class="media">
+                                <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
+                                <div class="media-body ml-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-1">
+                                        <h6 class="mb-0">@repli.Account.Name</h6><small class="small font-weight-bold"> @repli.ChatDate</small>
+                                    </div>
+                                    <p class="font-italic mb-0 text-small"> @repli.Text</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+                <div class="post">
+                    @using (Html.BeginForm("Create", "ChatRoom", FormMethod.Post))
+                    {
+                        <input class="inputText" type="text" name="Reply" placeholder="Reply here"></input>
+                        <input type="hidden" name="CID" value="@chatRoom.Id" />
+                        <input type="submit" value="Reply" class="btn btn-success" />
+                    }
+                </div>
+            </div>
+        }
+    </tbody>*@
+
+<div class="container my-5 py-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12 col-lg-10 col-xl-8">
+            <div class="card">
+                <div class="card-body p-12">
+                    <h4 class="text-center mb-4 pb-2">Welcome to Chat Room</h4>
+
+                    @using (Html.BeginForm("CreateChat", "ChatRoom", FormMethod.Post , new {  id = "commentForm" }))
+                    {
+
+                        <div class="container my-10 py-10 text-dark">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-md-12 col-lg-12 col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body p-4">
+                                            <div class="d-flex flex-start w-100">
+                                                <img class="rounded-circle shadow-1-strong me-3"
+                                                     src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="65"
+                                                     height="65" />
+                                                <div class="w-100">
+                                                    <h5>Add your question</h5>
+
+                                                    <div class="form-outline">
+                                                        <textarea class="form-control"  rows="4" typeof="text" name="Text" id="commentContent" placeholder="Enter question here..." required></textarea>
+
+
+                                                        
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mt-3">
+
+                                                        @*<button type="button" class="btn btn-danger">
+                                                                Send <i class="fas fa-long-arrow-alt-right ms-1"></i>
+                                                            </button>*@
+                                                        <input type="submit" value="Send" class="btn btn-success" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @foreach (var chatRoom in Model)
+                    {
+
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex flex-start">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         src="data:image/jpeg;base64,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" alt="avatar" width="65"
+                                         height="65" />
+                                    <div class="flex-grow-1 flex-shrink-1">
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <p class="mb-1" style="color:black;">
+                                                    @chatRoom.Account.Name <span class="small">- @Html.DisplayFor(modelItem => chatRoom.ChatDate)</span>
+                                                </p>
+                                                <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
+                                            </div>
+                                            <p class="small mb-0" style="color:black;">
+                                                @Html.DisplayFor(modelItem => chatRoom.Text)
+                                            </p>
+                                            <div class="d-flex flex-row fs-12">
+                                                <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
+                                                <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                                <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>
+                                            </div>
+                                        </div>
+
+                                        @foreach (var repli in chatRoom.Replies)
+                                        {
+                                            <div class="d-flex flex-start mt-4">
+                                                <a class="me-3" href="#">
+                                                    <img class="rounded-circle shadow-1-strong"
+                                                         src="data:image/jpeg;base64,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" alt="avatar"
+                                                         width="65" height="65" />
+                                                </a>
+                                                <div class="flex-grow-1 flex-shrink-1">
+                                                    <div>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <p class="mb-1" style="color:black;">
+                                                                @repli.Account.Name <span class="small">- @repli.ChatDate</span>
+                                                            </p>
+                                                        </div>
+                                                        <p class="small mb-0" style="color:black;">
+                                                            @repli.Text
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-flex flex-row fs-12">
+                                                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
+                                                        <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                                        <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+
+
+                                    </div>
+                                </div>
+                                <div class="post">
+                                    @using (Html.BeginForm("Create", "ChatRoom", FormMethod.Post))
+                                    {
+                                        <input class="inputText" type="text" name="Reply" placeholder="Reply here" required></input>
+                                        <input type="hidden" name="CID" value="@chatRoom.Id" />
+                                        <input type="submit" value="Reply" class="btn btn-success" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .gradient-custom { /* fallback for old browsers */
+        background: #4facfe; /* Chrome 10-25,
+                            Safari 5.1-6 */
+        background: -webkit-linear-gradient(to bottom right, rgba(79, 172, 254, 1), rgba(0, 242, 254, 1)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+,
+                            Safari 7+ */
+        background: linear-gradient(to bottom right, rgba(79, 172, 254, 1), rgba(0, 242, 254, 1))
+    }
+
+    .inputText {
+        width: 270px;
+        height: 40px;
+    }
+
+    .post {
+        margin-top: 10px;
+        margin-left: 70px;
+    }
+
+    .chatt {
+        margin-top: 15px;
+    }
+
+    .rounded-0 {
+        margin-left: 20px;
+        margin-top: 15px;
+    }
+
+    body {
+        background-color: #74EBD5;
+        background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
+        min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        width: 5px;
+        background: #f5f5f5;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        width: 1em;
+        background-color: #ddd;
+        outline: 1px solid slategrey;
+        border-radius: 1rem;
+    }
+
+    .text-small {
+        font-size: 0.9rem;
+    }
+
+    .messages-box,
+    .chat-box {
+        height: 510px;
+        overflow-y: scroll;
+    }
+
+    .rounded-lg {
+        border-radius: 0.5rem;
+    }
+
+    input::placeholder {
+        font-size: 0.9rem;
+        color: #999;
+    }
+</style>
+<script>
+    document.getElementById('commentForm').addEventListener('submit', function(event) {
+        var commentContent = document.getElementById('commentContent').value.trim();
+        if (commentContent === "") {
+            alert("Chat cannot be empty");
+            event.preventDefault();
+        }
+    });
+</script>

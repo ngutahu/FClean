@@ -1,0 +1,106 @@
+﻿@model IEnumerable<ProjectFClean.Models.Account>
+
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Account management</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Identify_Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Approve)
+        </th>
+        <th>CRUD</th>
+        <th>Lock</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Identify_Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Approve)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.AccountID }) |
+                @Html.ActionLink("Detail", "AccountDetail", new { id = item.AccountID }) 
+            </td>
+            <td>
+                @*@Html.ActionLink("Lock", "Lock", "Admin", new { id = item.AccountID }, new { @class = "lock-link", data_name = item.Name })*@
+                <a href="/Admin/User" class="lock-btn" data-lock-url="@Url.Action("Lock", "Admin", new { id = item.AccountID })" data-name="@item.Name">
+                    Lock
+                </a>
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('.lock-btn').click(function (e) {
+        // Ngăn chặn mặc định của sự kiện click
+        e.preventDefault();
+        var name = $(this).data('name');
+
+        // Hiển thị cửa sổ cảnh báo thông báo
+        if (confirm('Bạn có muốn khóa tài khoản ' + name + ' không?')) {
+            // Nếu chọn confirm
+            var lockUrl = $(this).data('lock-url');
+            // Chuyển đến trang LockAcc
+            window.location.href = lockUrl;
+            @*window.location.href = '@Url.Action("User", "Admin")';*@
+
+            alert("Bạn đã khóa tài khoản " + name + " thành công.")
+        }
+        else {
+            // Nếu chọn cancel
+            // Load lại trang User
+            location.reload();
+        }
+    });
+
+</script>
+
+

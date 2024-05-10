@@ -1,0 +1,384 @@
+﻿@model ProjectFClean.Models.Post
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutDetails.cshtml";
+}
+
+
+<body>
+    <h2>Details</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AccountID, "Author", htmlAttributes: new { @class = "control-label col-md-2" })
+                </th>
+                <td>@Html.DisplayFor(model => model.Account.Name)</td>
+            </tr>
+            <tr>
+                <th>Service</th>
+                <td>@Html.DisplayFor(model => model.Service.Name_of_service)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Price)</th>
+                <td>@Html.DisplayFor(model => model.Price)</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>@Html.DisplayFor(model => model.Location)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Gender)</th>
+                <td>@Html.DisplayFor(model => model.Gender)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Age)</th>
+                <td>@Html.DisplayFor(model => model.Age)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Experience)</th>
+                <td>@Html.DisplayFor(model => model.Experience)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <td>@Html.DisplayFor(model => model.Description)</td>
+            </tr>
+
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.DatePost, htmlAttributes: new { @class = "control-label col-md-2" })
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.DatePost)
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="btn-bottom">
+        @{var account = Session["Account"] as ProjectFClean.Models.Account;}
+        @if (ViewBag.IsOwner)
+        {
+            <div class="host-post">
+                @using (Html.BeginForm("Edit", "Posts", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="btn-edit">
+                            @Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.PID }, new { @class = "btn btn-neutral" })
+                        </div>
+                    </div>
+                }
+
+                @using (Html.BeginForm("DeleteConfirmed", "Posts", new { id = Model.PID }, FormMethod.Post, new { id = "deleteForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", Model.PID)
+                    <div class="form-group">
+                        <div class="btn-edit">
+                            <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+        }
+        else
+        {
+            <div class="apply-post">
+                @using (Html.BeginForm("Apply", "Posts", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="postId" value="@Model.PID" />
+                    <input type="hidden" name="dateApply" value="@DateTime.Now" />
+                    <button type="submit" class="btn btn-primary">Apply Now</button>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="btn-bottom">
+        @if (ViewBag.IsOwner)
+        {
+            <div class="list-apply">
+                <h3>List of Applies</h3>
+
+
+                <table class="table" id="tbl-Apply">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Date Apply</th>
+                            <th>Approval</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var apply in Model.Applies)
+                        {
+                            <tr>
+                                <td>
+
+                                    @*<a style="color: #00B074; padding-right: 10px" href="@Url.Action(apply.Account.Role == "Renter" ? "DetailsRenter" : "Details", "Home", new { HID = apply.AccountID, RID = apply.AccountID })">
+                                            @apply.Account.Name
+                                        </a>*@
+                                    @if (apply.Account.Role == "Renter")
+                                    {
+                                        <a style="color: #00B074; padding-right: 10px" href="@Url.Action("DetailsRenter1", "Home", new { RID = apply.Account.Renters.First().RID})">
+                                            @apply.Account.Name
+                                        </a>
+                                    }
+                                    else if (apply.Account.Role == "Housekeeper")
+                                    {
+                                        <a style="color: #00B074; padding-right: 10px" href="@Url.Action("Details", "Home", new { HID = apply.Account.Housekeepers.First().HID })">
+                                            @apply.Account.Name
+                                        </a>
+                                    }
+
+                                </td>
+                                <td><span class="status">@apply.Status</span></td>
+                                <td>@apply.DateApply</td>
+                                <td>
+                                    <div class="btn-group">
+                                        @*<button type="button" class="btn btn-success btn-confirm" data-apply-id="@apply.PID">Confirm</button>
+                                            <button type="button" class="btn btn-neutral btn-cancel" data-apply-id="@apply.PID">Cancel</button>*@
+
+                                        <div class="confirm-post">
+                                            @using (Html.BeginForm("ConfirmApply", "Posts", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <button type="button" class="btn btn-success btn-confirm" data-apply-id="@apply.ApplyID">Confirm</button>
+                                            }
+                                        </div>
+                                        <div class="cancel-post">
+                                            @using (Html.BeginForm("CancelApply", "Posts", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <button type="button" class="btn btn-neutral btn-cancel" data-apply-id="@apply.ApplyID">Cancel</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+    @*Libraries*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/wow/wow.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('#deleteButton').on('click', function (event) {
+            event.preventDefault();
+
+            if (confirm("Are you sure you want to delete this post?")) {
+                var form = $('#deleteForm');
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (result) {
+                        alert("Post deleted successfully.");
+                        // Sau khi xóa thành công, chuyển hướng người dùng đến trang danh sách bài viết
+                        window.location.href = '@Url.Action("Index", "Posts")';
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error deleting post and its applies: ' + error);
+                    }
+                });
+            }
+        });
+    });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function () {
+                var form = $(this);
+                var submitButton = form.find('button[type="submit"]');
+                submitButton.prop('disabled', true);
+                var url = form.attr("action");
+                var data = form.serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (response) {
+                        window.location.href = '@Url.Action("Index", "Posts")';
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error submitting application: " + error);
+                    }complete: function () {
+                        submitButton.prop('disabled', false); // Kích hoạt lại nút submit sau khi hoàn thành AJAX request
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Xử lý sự kiện khi nhấn nút Confirm
+            $('.btn-confirm').on('click', function () {
+                var applyId = $(this).data('apply-id');
+
+                $.ajax({
+                    url: '@Url.Action("ConfirmApply", "Posts")',
+                    type: 'POST',
+                    data: { applyId: applyId },
+                    success: function (result) {
+                        if (result.success) {
+                            // Cập nhật trạng thái "Confirmed" trực tiếp trên giao diện
+                            $(this).closest('tr').find('.status').text('Confirmed');
+                            // Hiển thị thông báo thành công
+                            alert('Confirmed successfully.');
+                           window.location.href = '@Url.Action("Index", "Posts")';
+                        } else {
+                            // Hiển thị thông báo lỗi
+                            alert('Cannot Confirm Again.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Hiển thị thông báo lỗi
+                        alert('Error confirming application: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Xử lý sự kiện khi nhấn nút Confirm
+            $('.btn-cancel').on('click', function () {
+                var applyId = $(this).data('apply-id');
+
+                $.ajax({
+                    url: '@Url.Action("CancelApply", "Posts")',
+                    type: 'POST',
+                    data: { applyId: applyId },
+                    success: function (result) {
+                        if (result.success) {
+                            // Cập nhật trạng thái "Confirmed" trực tiếp trên giao diện
+                            $(this).closest('tr').find('.status').text('Canceled');
+                            // Hiển thị thông báo thành công
+                            alert('Cancel successfully.');
+                            window.location.href = '@Url.Action("Index", "Posts")';
+                        } else {
+                            // Hiển thị thông báo lỗi
+                            alert('Cannot Cancel Again.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Hiển thị thông báo lỗi
+                        alert('Error Cancel application: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+<style>
+    .btn-neutral {
+        border-radius: 5px;
+        border: 1px solid #0d0d0d9e;
+        color: #0d0d0d9e;
+        font-size: .875rem;
+        line-height: 1.25rem;
+        height: 38px;
+        width: 85px;
+        font-weight: 800;
+    }
+
+        .btn-neutral:hover {
+            background-color: #0d0d0d9e;
+            color: white;
+            transition: ease-in-out 0.15s;
+        }
+
+    .btn-cancel {
+        border: 1px solid #0d0d0d9e;
+        border-radius: 5px;
+        color: #0d0d0d9e;
+        font-size: .875rem;
+        line-height: 1.25rem;
+        height: 38px;
+        margin-left: 5px;
+        width: 85px;
+    }
+
+    .btn-confirm {
+        border-radius: 5px;
+    }
+
+    .table-responsive th,
+    .table-responsive td {
+        padding: 10px;
+        text-align: justify;
+        font-size: 20px;
+        color: black;
+    }
+
+    #tbl-Apply {
+        width: 920px;
+    }
+
+    .table-responsive {
+        padding: 0 200px;
+    }
+
+    h2 {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .btn-edit {
+        display: flex;
+        justify-content: space-around;
+        height: 40px;
+        border-radius: 5px;
+    }
+
+    .btn-bottom {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .back-to-list {
+        border: 1px solid #00b074;
+        padding: 5px;
+    }
+
+    #Description {
+        width: 100%;
+        height: 70px;
+    }
+
+    .host-post {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    h3 {
+        text-align: center;
+        margin-top: 50px;
+    }
+</style>

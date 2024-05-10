@@ -1,0 +1,42 @@
+﻿
+
+@model ProjectFClean.ViewModel.Email
+
+@{
+    ViewBag.Title = "VerifyOtp";
+
+}
+
+
+@*<script src="~/js/checkInput.js"></script>*@
+
+<h1>Verify OTP</h1>
+
+@using (Html.BeginForm("Edit", "ResetPassword", FormMethod.Post))
+{
+    <input type="hidden" name="email" value="@Model.email" />
+    <!-- Hidden field to pass the email address -->
+    @*<div class="form-group">
+            <label for="email">Enter Email:</label>
+            <input type="email" name="email" class="form-control" required />
+        </div>*@
+    <div class="form-group">
+        <label for="inputOtp">Enter OTP:</label>
+        <input type="text" name="inputOtp" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="password">New Password:</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+}
+
+<!-- Display any error messages here -->
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}

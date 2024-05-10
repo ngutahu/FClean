@@ -1,0 +1,372 @@
+﻿@model ProjectFClean.Models.Housekeeper
+
+@{
+    var account = Session["Account"] as ProjectFClean.Models.Account;
+    var houseKeepers = Model as ProjectFClean.Models.Housekeeper;
+}
+@{
+    ViewData["Title"] = "Setting Account: " + @Model.Account.Name;
+    Layout = null;
+}
+
+
+<head>
+    <meta charset="utf-8">
+    <title>JobEntry - Job Portal Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/style.css" rel="stylesheet">
+</head>
+
+
+@* ************** Content ************** *@
+<div class="container-xxl bg-white p-0">
+
+
+
+    <div class="row">
+        @if (account != null)
+        {
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <h5 class="card-header">Profile Details / @account.Name</h5>
+                    <!-- Account -->
+                    <form action="@Url.Action("UpdateProfile", "Housekeepers")" method="post" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                                @{
+                                    var imagePath = "~/img/" + account.AccountID + ".jpg";
+                                }
+                                @{
+                                    // Sử dụng account.ImgAvatarID nếu có, nếu không, fallback về account.AccountID
+                                    var avatarId = account.ImgAvatarID;
+                                    var avatarImagePath = "~/img/" + avatarId + ".jpg";
+                                }
+                                <img src="~/img/@account.ImgAvatarID" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
+                                @*<img src="@Url.Content(imagePath)" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />*@
+                                <div class="button-wrapper">
+
+                                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                        <span class="d-none d-sm-block">Upload new photo</span>
+                                        <i class="bx bx-upload d-block d-sm-none"></i>
+                                        <input type="file" name="file" id="upload" class="account-file-input" hidden accept="img/png, img/jpeg" />
+                                    </label>
+                                    @*<button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                                            <i class="bx bx-reset d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">Reset</span>
+                                        </button>*@
+
+                                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-0">
+                        <div class="card">
+                            <h5 class="card-header">Account Setting</h5>
+                            <div class="card-body">
+                                <div class="card-body">
+
+
+
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" id="Id" value="@account.AccountID" name="Id" />
+                                    <div class="row">
+
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="mb-3 col-md-6">
+                                            @Html.LabelFor(model => account.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div>
+                                                <input type="text" id="Name" name="Name" value="@account.Name" class="form-control" required />
+                                                @Html.ValidationMessageFor(model => account.Name, "", new { @class = "text-danger" })
+                                            </div>
+
+                                        </div>
+
+                                        <div class="mb-3 col-md-6">
+                                            @Html.LabelFor(model => account.Role, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div>
+                                                @Html.EditorFor(model => account.Role, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="mb-3 col-md-6">
+                                            @Html.LabelFor(model => account.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="">
+                                                <input type="text" id="Email" name="Email" value="@account.Email" class="form-control" />
+                                                @Html.ValidationMessageFor(model => account.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 col-md-6">
+                                            @Html.LabelFor(model => account.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">+84</span>
+                                                    <input type="text" id="Phone" name="Phone" value="@account.Phone" class="form-control" pattern="\[0-9]{9}" title="Please enter a valid phone number code +84 and 10 digits." />
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <input type="hidden" id="Id" value="@Model.HID" name="HId" />
+                                    <div class="row form-horizontal">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                        <div class="mb-3 col-md-6 form-group">
+                                            <label for="Age" class="control-label col-md-2">Age</label>
+                                            <div>
+                                                <input type="number" id="Age" value="@houseKeepers.Age" name="Age" class="form-control" min="18" max="100" />
+                                                @Html.ValidationMessageFor(model => houseKeepers.Age, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 col-md-6 form-group">
+                                            <label for="Gender" class="control-label col-md-2">Gender</label>
+                                            <div>
+                                                <select class="form-control" id="Gender" name="Gender" required>
+                                                    <option value="" @if (houseKeepers.Gender == "") { <text> selected</text> }>Select</option>
+                                                    <option value="Male" @if (houseKeepers.Gender == "Male") { <text> selected</text> }>Male</option>
+                                                    <option value="Female" @if (houseKeepers.Gender == "Female") { <text> selected</text> }>Female</option>
+                                                </select>
+                                                @Html.ValidationMessageFor(model => houseKeepers.Gender, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 col-md-6 form-group">
+                                            <label for="Price" class="control-label col-md-2">Price</label>
+                                            <div>
+                                                <input type="number" id="Price" value="@houseKeepers.Price" name="Price" class="form-control" min="0" step="0.01" />
+                                                @Html.ValidationMessageFor(model => houseKeepers.Price, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 col-md-6 form-group">
+                                            <label for="Skill" class="control-label col-md-2">Skill</label>
+                                            <div>
+                                                @*<input type="text" id="Skill" value="@houseKeepers.Skill" name="Skill" class="form-control" maxlength="50" />*@
+                                                <select id="Skill" name="Skill" value="@houseKeepers.Skill" class="form-control">
+                                                    <option value="Cleaning" @(Model != null && Model.Skill == "Cleaning" ? "selected" : "")>Cleaning</option>
+                                                    <option value="Child Care" @(Model != null && Model.Skill == "Child Care" ? "selected" : "")>Child Care</option>
+                                                    <option value="Elderly Care" @(Model != null && Model.Skill == "Elderly Care" ? "selected" : "")>Elderly Care</option>
+                                                    <option value="Patient Care" @(Model != null && Model.Skill == "Patient Care" ? "selected" : "")>Patient Care</option>
+                                                    <option value="Laundry" @(Model != null && Model.Skill == "Laundry" ? "selected" : "")>Laundry</option>
+                                                    <option value="Home Cooking" @(Model != null && Model.Skill == "Home Cooking" ? "selected" : "")>Home Cooking</option>
+                                                    <option value="Grocery Assistant" @(Model != null && Model.Skill == "Grocery Assistant" ? "selected" : "")>Grocery Assistant</option>
+                                                </select>
+                                                @Html.ValidationMessageFor(model => houseKeepers.Skill, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                        <div class="mb-3 col-md-6 form-group">
+                                            <label for="Experiment" class="control-label col-md-2">Experiment</label>
+                                            <div>
+                                                <input type="text" id="Experiment" value="@houseKeepers.Experiment" name="Experiment" class="form-control" />
+                                                @Html.ValidationMessageFor(model => houseKeepers.Experiment, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 col-md-6 form-group">
+                                            <label for="Description" class="control-label col-md-2">Description</label>
+                                            <div>
+                                                <input type="text" id="Description" name="Description" value="@houseKeepers.Description" class="form-control" />
+                                                @Html.ValidationMessageFor(model => houseKeepers.Description, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                        <input type="hidden" id="HId" value="@Model.HID" name="Id" />
+                                        <div class="mb-3 col-md-6 form-group">
+                                            <label for="Address" value="@houseKeepers.Address" class="control-label col-md-2">Address</label>
+                                            <div>
+                                                <select id="Address" name="Address" class="form-control">
+                                                    <option value="" selected>Select Distrinct</option>
+                                                    <option value="Lien Chieu" @(Model != null && Model.Address == "Liên Chiểu" ? "selected" : "")>Liên Chiểu</option>
+                                                    <option value="Hai Chau" @(Model != null && Model.Address == "Hải Châu" ? "selected" : "")>Hải Châu</option>
+                                                    <option value="Ngu Hanh Son" @(Model != null && Model.Address == "Ngũ Hành Sơn" ? "selected" : "")>Ngũ Hành Sơn</option>
+                                                    <option value="Son Tra" @(Model != null && Model.Address == "Sơn Trà" ? "selected" : "")>Sơn Trà</option>
+                                                    <option value="Cam Le" @(Model != null && Model.Address == "Cẩm Lệ" ? "selected" : "")>Cẩm Lệ</option>
+                                                    <option value="Thanh Khe" @(Model != null && Model.Address == "Thanh Khê" ? "selected" : "")>Thanh Khê</option>
+
+                                                </select>
+                                                @Html.ValidationMessageFor(model => houseKeepers.Address, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-2">
+                                            <button type="submit" value="UpdateProfile" class="btn btn-primary me-2">Save changes</button>
+
+                                            <button type="reset" class="btn btn-neutral">Cancel</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /Account -->
+                @*<div class="card">
+                        <h5 class="card-header">Delete Account</h5>
+                        <div class="card-body">
+                            <div class="mb-3 col-12 mb-0">
+                                <div class="alert alert-warning">
+                                    <h6 class="alert-heading mb-1">Are you sure you want to delete your account?</h6>
+                                    <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
+                                </div>
+                            </div>
+                            <form id="formAccountDeactivation" onsubmit="return false">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="accountActivation" id="accountActivation" />
+                                    <label class="form-check-label" for="accountActivation">I confirm my account deactivation</label>
+                                </div>
+                                <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
+                            </form>
+                        </div>
+                    </div>*@
+            </div>
+        }
+        else
+        {
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert">
+                    Error: User account not found.
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#upload").on("change", function (e) {
+                if (this.files && this.files[0]) {
+                    var fileType = this.files[0].type;
+                    if (fileType.startsWith("image/")) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#uploadedAvatar').attr('src', e.target.result);
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        alert("Chỉ chấp nhận tệp tin hình ảnh (jpg, png, gif)!");
+                        $(this).val("");
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Khai báo biến kiểm tra form
+            var form = $("form");
+
+            // Sự kiện submit form
+            form.submit(function (event) {
+                // Kiểm tra hợp lệ của tên
+                var nameInput = $("#Name").val();
+                if (nameInput.length < 5) {
+                    alert("Tên phải có ít nhất 5 ký tự.");
+                    event.preventDefault(); // Ngăn chặn submit form
+                    return;
+                }
+
+                // Kiểm tra hợp lệ của email
+                var emailInput = $("#Email").val();
+                var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+                if (!emailRegex.test(emailInput)) {
+                    alert("Email không hợp lệ.");
+                    event.preventDefault(); // Ngăn chặn submit form
+                    return;
+                }
+
+                // Kiểm tra hợp lệ của tuổi
+                var ageInput = parseInt($("#Age").val());
+                if (ageInput < 18 || ageInput > 70) {
+                    alert("Tuổi phải từ 18 đến 70.");
+                    event.preventDefault(); // Ngăn chặn submit form
+                    return;
+                }
+
+                // Kiểm tra hợp lệ của số điện thoại
+                var phoneInput = $("#Phone").val();
+                if (phoneInput.length !== 10 || isNaN(phoneInput)) {
+                    alert("Số điện thoại không hợp lệ.");
+                    event.preventDefault(); // Ngăn chặn submit form
+                    return;
+                }
+
+                // Kiểm tra hợp lệ của giá
+                var priceInput = parseFloat($("#Price").val());
+                if (priceInput < 1000 || priceInput % 5 !== 0) {
+                    alert("Giá phải lớn hơn 1000 và chia hết cho 5.");
+                    event.preventDefault(); // Ngăn chặn submit form
+                    return;
+                }
+            });
+        });
+
+    </script>
+
+}
+<style>
+    .input-group {
+        width: 280px;
+    }
+
+    .btn-neutral {
+        border: 1px solid black;
+    }
+
+        .btn-neutral:hover {
+            border: 1px solid black;
+            background-color: #666565;
+            color: #fff;
+        }
+
+    #logoutBtn {
+        border-radius: 3px;
+        height: 40px;
+        font-weight: 600;
+        background-color: #ff403f;
+        color: white;
+        margin: 0 5px;
+        cursor: pointer;
+        border: none;
+    }
+</style>

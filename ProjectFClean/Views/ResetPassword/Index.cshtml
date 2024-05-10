@@ -1,0 +1,147 @@
+﻿<!--@{
+    ViewData["Title"] = "Reset Password";
+}
+
+<h1>Reset Password</h1>
+@using (Html.BeginForm("ForgotPassword", "ResetPassword", FormMethod.Post))
+{
+
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Send OTP</button>
+}-->
+<!-- Display any error messages here -->
+<!--@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}-->
+
+
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<div class="form-gap"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="text-center">
+                        <h3><i class="fa fa-lock fa-4x"></i></h3>
+                        <h2 class="text-center">Forgot Password?</h2>
+                        <p>You can reset your password here.</p>
+                        <div class="panel-body">
+
+                            @using (Html.BeginForm("ForgotPassword", "ResetPassword", FormMethod.Post))
+                            {
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
+                                        <input id="email" name="email" placeholder="email address" class="form-control" type="email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit">
+                                </div>
+
+                                <input type="hidden" class="hide" name="token" id="token" value="">
+                            }
+
+                        </div>
+
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @TempData["ErrorMessage"]
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Chỉnh lại khoảng cách trên phần form */
+    .form-gap {
+        padding-top: 70px;
+    }
+
+    /* Định dạng nút Reset Password */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    /* Định dạng phần input */
+    .input-group-addon {
+        background-color: #f7f7f7;
+        border: 1px solid #ccc;
+    }
+
+        /* Định dạng biểu tượng chìa khóa trong input */
+        .input-group-addon .fa-lock {
+            color: #000000; /* Màu đen */
+        }
+
+    /* Đặt khoảng cách giữa input và nút */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    /* Định dạng nút Send OTP */
+    .btn-send {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-send:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+    /* Định dạng nút và icon Lock */
+    .panel-default {
+        border-color: #d3e0e9;
+    }
+
+    .fa-lock {
+        color: black; /* Màu của biểu tượng Lock */
+    }
+
+    /* Định dạng nội dung trong panel */
+    .panel-body {
+        padding: 20px;
+    }
+
+        /* Định dạng tiêu đề trong panel */
+        .panel-body h2 {
+            margin-top: 0;
+        }
+
+        /* Định dạng nội dung mô tả trong panel */
+        .panel-body p {
+            margin-bottom: 20px;
+        }
+
+    /* Định dạng thông báo lỗi */
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+</style>

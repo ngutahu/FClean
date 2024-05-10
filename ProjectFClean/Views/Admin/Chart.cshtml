@@ -1,0 +1,191 @@
+﻿@model IEnumerable<ProjectFClean.Models.Account>
+
+@{
+    ViewBag.Title = "Chart";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<body>
+    <!-- dashboard inner -->
+    <div class="midde_cont">
+        <div class="container-fluid">
+            <div class="row column_title">
+                <div class="col-md-12">
+                    <div class="page_title">
+                        <h2>Chart</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thêm phần hiển thị tổng số tài khoản -->
+            <div class="full counter_section margin_bottom_30">
+                <div class="counter_section">
+                    <div class="couter_icon">
+                        <i class="fa fa-user yellow_color"></i>
+                    </div>
+                    <div class="counter_no">
+                        <p class="total_no" id="totalAccounts"></p>
+                        <p class="head_couter">Total Accounts</p>
+                    </div>
+                </div>
+                <div class="counter_section">
+                    <div class="couter_icon">
+                        <i class="fa fa-user red_color"></i>
+                    </div>
+                    <div class="counter_no">
+                        <p class="total_no" id="totalRenters"></p>
+                        <p class="head_couter">Total Renters</p>
+                    </div>
+                </div>
+                <div class="counter_section">
+                    <div class="couter_icon">
+                        <i class="fa fa-user green_color"></i>
+                    </div>
+                    <div class="counter_no">
+                        <p class="total_no" id="totalHousekeepers"></p>
+                        <p class="head_couter">Total Housekeepers</p>
+                    </div>
+                </div>
+                @*<div class="counter_section">
+                    <div class="couter_icon">
+                        <i class="fa fa-user yellow_color"></i>
+                    </div>
+                    <div class="counter_no">
+                        <p class="total_no" id="totalMoney"></p>
+                        <p class="head_couter">Total Money In System</p>
+                    </div>
+                </div>*@
+            </div>
+
+
+            <!-- Thêm phần biểu đồ -->
+            <div class="row column1">
+                <div class="col-lg-12">
+                    <div class="white_shd full margin_bottom_30">
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Chart Account</h2>
+                            </div>
+                        </div>
+                        <div class="myChart">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Lấy tổng số tài khoản
+                $.ajax({
+                    url: "/Admin/GetTotalAccounts",
+                    type: "GET",
+                    success: function (data) {
+                        $("#totalAccounts").text(data);
+                    }
+                });
+            });
+
+        </script>
+        <script>
+            $(document).ready(function () {
+                // Lấy tổng số tài khoản
+                $.ajax({
+                    url: "/Admin/GetTotalHousekeepers",
+                    type: "GET",
+                    success: function (data) {
+                        $("#totalHousekeepers").text(data);
+                    }
+                });
+            });
+
+        </script>
+        <script>
+            $(document).ready(function () {
+                // Lấy tổng số tài khoản
+                $.ajax({
+                    url: "/Admin/GetTotalRenters",
+                    type: "GET",
+                    success: function (data) {
+                        $("#totalRenters").text(data);
+                    }
+                });
+            });
+
+        </script>
+       
+
+        @using Newtonsoft.Json
+
+        <script>
+  $(document).ready(function() {
+    var renterData = @Html.Raw(Json.Encode(ViewBag.RenterDataJson));
+    var housekeeperData = @Html.Raw(Json.Encode(ViewBag.HousekeeperDataJson));
+    console.log("renterData: ", renterData);
+    console.log("housekeeperData: ", housekeeperData);
+    if (renterData && housekeeperData) {
+      var labels = [];
+      var renterCounts = [];
+      var housekeeperCounts = [];
+
+      renterData.forEach(function(item) {
+        labels.push(moment(item.Date).format('YYYY-MM-DD')); // Định dạng ngày tháng sang YYYY-MM-DD
+        renterCounts.push(item.Count);
+      });
+
+      housekeeperData.forEach(function(item) {
+        labels.push(moment(item.Date).format('YYYY-MM-DD')); // Định dạng ngày tháng sang YYYY-MM-DD
+        housekeeperCounts.push(item.Count);
+      });
+
+      var ctx = document.getElementById("myChart").getContext("2d");
+      var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Renter",
+              data: renterCounts,
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 1
+            },
+            {
+              label: "Housekeeper",
+              data: housekeeperCounts,
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              type: 'time',
+              time: {
+                unit: 'day',
+                tooltipFormat: 'YYYY-MM-DD'
+              }
+            }]
+          }
+        }
+      });
+    } else {
+      console.error("Dữ liệu không tồn tại hoặc không hợp lệ");
+    }
+  });
+        </script>
+</body>
+<style>
+    .counter_section {
+        display:flex;
+        justify-content: space-between;
+    }
+</style>

@@ -1,0 +1,489 @@
+﻿@model ProjectFClean.Models.Housekeeper
+
+@{
+    ViewBag.Title = "FClean";
+    Layout = "~/Views/Shared/_LayoutDetails.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <div class="Rent">
+        <div class="img-Housekeeper">
+            <img class="ima" src="/img/@(Html.DisplayFor(model => model.Account.ImgAvatarID))" />
+            @*<div class="Status">@Model.Account.Status</div>*@
+        </div>
+
+        <div class="Detail">
+            <div class="NameHousekeeper">@Html.DisplayFor(model => model.Account.Name)</div>
+            <div class="Line"></div>
+            <div class="LineService">
+                <div class="Service">
+                    <div class="NameService">@Html.DisplayFor(model => model.Skill)</div>
+                </div>
+                <div class="Line"></div>
+            </div>
+            <div class="Information">Information</div>
+            <div class="Description">@Html.DisplayFor(model => model.Description)</div>
+        </div>
+        <div class="Rent-right">
+            <div class="price">
+                @Html.DisplayFor(model => model.Price) đ/h
+            </div>
+            <div class="BtnRent">
+                <div class="Rent-item">
+                    <a href="@Url.Action("RentView", "Booking", new { housekeeperId = Model.HID })">Rent</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-11">
+                <h2>FeedBack</h2>
+                <div class="d-flex flex-column comment-section">
+                    @using (Html.BeginForm("Create", "Comment", FormMethod.Post, new { @class = "myForm" , id="commentForm"}))
+                    {
+                        <div class="bg-light p-2">
+                            <div class="d-flex flex-row align-items-start">
+                                <img class="rounded-circle" src="/img/@Model.Account.ImgAvatarID" width="50"><textarea class="form-control ml-1 shadow-none textarea" type="text" id="commentContent" placeholder="Enter feedback here..." name="Content"></textarea>
+                                <input type="hidden" name="HID" value="@Model.HID" />
+                            </div>
+                            <div style="margin-left: 40px;" class="mt-2 text-right"> <input type="submit" value="Send" class="btn btn-success" /></div>
+                        </div>
+                    }
+
+                    @foreach (var item in Model.Comments.OrderByDescending(r => r.CDate))
+                    {<div>
+                            <div class="bg-white p-2">
+                                <div class="d-flex flex-row user-info">
+                                    <img class="rounded-circle" src="/img/@item.Account.ImgAvatarID" width="50">
+                                    <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold  name-feedback">@item.Account.Name</span><span class="date text-black-50">Shared publicly - @item.CDate</span></div>
+                                </div>
+                                <div class="mt-2">
+                                    <p id="description-fb" style="color:black;" class="comment-text">@item.Content</p>
+                                </div>
+                            </div>
+                            <div class="Line-feedback">
+                                
+                                @*<div class="d-flex flex-row fs-12">
+                                    <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
+                                    <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                    <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>
+                                </div>*@
+                            </div>
+                            @*<div class="rep">
+                                @foreach (var reply in item.RepliComments)
+                                {
+                                    <div class="bg-white p-2">
+                                        <div class="d-flex flex-row user-info">
+                                            <img class="rounded-circle" src="/img/@reply.Account.ImgAvatarID" width="40">
+                                            <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold  name">@reply.Account.Name</span><span class="date text-black-50">Shared publicly - @reply.CDate</span></div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <p style="color:black;" class="comment-text">@reply.Content</p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white mar">
+                                        <div class="d-flex flex-row fs-12">
+                                            <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
+                                            <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                            <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>
+                                        </div>
+                                    </div>
+
+                                }
+                                <div class="post">
+                                    @using (Html.BeginForm("CreateReply", "Comment", FormMethod.Post, new { @class = "myFormR" }))
+                                    {
+                                        <input class="inputText" type="text" name="Reply" placeholder="Reply here" required></input>
+                                        <input type="hidden" name="CId" value="@item.Id" />
+                                        <input type="hidden" name="Hid" value="@item.HID" />
+                                        <input type="submit" value="Reply" class="btn btn-success" />
+                                    }
+                                </div>
+
+
+                            </div>*@
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<style>
+    .mar {
+        margin-bottom: 20px;
+    }
+
+    .rep {
+        margin-left: 50px;
+    }
+
+    .myForm {
+        border: 1px solid #000;
+        border-radius: 5px;
+        padding: 2px;
+        
+    }
+    .bg-light {
+        background-color: #f7f7f7 !important;
+    }
+
+
+    .Rent {
+        display: flex;
+        width: 100%;
+        gap: 20px;
+        padding: 50px 10px;
+    }
+
+    img .ima {
+        width: 288px;
+        height: 276px;
+        border-radius: 24px;
+    }
+
+    .Line {
+        width: 650px;
+        border: 1px solid black;
+    }
+    .Line-feedback {
+        border: 1px solid #c9caca;
+    }
+
+    .Information {
+        color: black;
+        font-size: 50px;
+        font-family: Inter;
+        font-weight: 700;
+    }
+
+    .Detail {
+        width: 650px;
+        height: 416px;
+    }
+
+    .NameHousekeeper {
+        color: black;
+        font-size: 50px;
+        font-family: Inter;
+        font-weight: 700;
+    }
+
+    .Description {
+        color: black;
+        font-size: 50px;
+        font-family: Inter;
+        font-weight: 700;
+    }
+
+    .NameService {
+        text-align: center;
+        margin: 20px 0;
+        width: 650px;
+        height: 40px;
+        background-color: black;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 20px;
+        font-family: Inter;
+        font-weight: 700;
+    }
+
+    .Description {
+        color: black;
+        font-size: 30px;
+        font-family: Inter;
+        font-weight: 400;
+    }
+
+    .Rent-right {
+        width: 320px;
+        height:190px !important;
+        background: white;
+        border-radius: 20px;
+        border: 1px black solid;
+    }
+    #description-fb {
+        margin-left: 63px;
+    }
+    .price {
+        width: 343px;
+        height: 54px;
+        color: #FF0000;
+        font-size: 30px;
+        font-family: Inter;
+        font-weight: 700;
+        padding: 10px 10px;
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+
+
+    .Rent-item {
+        margin: 0 35px;
+        width: 250px;
+        height: 71px;
+        background: #00B074;
+        border-radius: 20px;
+        font-size: 40px;
+        font-family: Inter;
+        font-weight: 700;
+        text-align: center;
+    }
+
+        .Rent-item a {
+            color: white;
+        }
+
+    .Status {
+        color: #3EC100;
+        font-size: 40px;
+        font-family: Inter;
+        font-weight: 700;
+        margin-left: 80px;
+    }
+
+    .navbar-nav {
+        width: 100%;
+    }
+
+    .name-feedback {
+        color: black;
+        font-size:20px;
+        font-weight:bold;
+    }
+
+    #clicked {
+        padding-top: 1px;
+        padding-bottom: 1px;
+        text-align: center;
+        width: 100%;
+        background-color: #ecb21f;
+        border-color: #a88734 #9c7e31 #846a29;
+        color: black;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 13px;
+    }
+
+    #profile {
+        background-color: unset;
+    }
+
+    #post {
+        margin: 10px;
+        padding: 6px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: center;
+        background-color: #ecb21f;
+        border-color: #a88734 #9c7e31 #846a29;
+        color: black;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 13px;
+        width: 50%;
+    }
+
+   
+    #nav-items li a, #profile {
+        text-decoration: none;
+        color: rgb(224, 219, 219);
+        background-color: black;
+    }
+
+
+    .comments {
+        margin-top: 5%;
+        margin-left: 20px;
+        display: flex;
+    }
+
+    .darker {
+        border: 1px solid #ecb21f;
+        background-color: black;
+        float: right;
+        border-radius: 5px;
+        padding-left: 40px;
+        padding-right: 30px;
+        padding-top: 10px;
+    }
+
+    .comment {
+        border: 1px solid rgba(16, 46, 46, 1);
+        background-color: rgba(16, 46, 46, 0.973);
+        float: left;
+        border-radius: 5px;
+        padding-left: 40px;
+        padding-right: 30px;
+        padding-top: 10px;
+    }
+
+        .comment h4, .comment span, .darker h4, .darker span {
+            display: inline;
+        }
+
+        .comment p, .comment span, .darker p, .darker span {
+            color: rgb(184, 183, 183);
+        }
+
+    h1, h4 {
+        color: white;
+        font-weight: bold;
+    }
+
+    label {
+        color: rgb(212, 208, 208);
+    }
+
+    #align-form {
+        margin-top: 20px;
+    }
+
+    .form-group p a {
+        color: white;
+    }
+
+    #checkbx {
+        background-color: black;
+    }
+
+    #darker img {
+        margin-right: 15px;
+        position: static;
+    }
+
+    .form-group input, .form-group textarea {
+        background-color: black;
+        border: 1px solid rgba(16, 46, 46, 1);
+        border-radius: 12px;
+    }
+
+    form {
+        border: 1px solid rgba(16, 46, 46, 1);
+        background-color: rgba(16, 46, 46, 0.973);
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+
+
+
+    .Rent {
+        display: flex;
+        width: 100%;
+        gap: 20px;
+        padding: 50px 10px;
+        height: 500px;
+    }
+
+    .img-Housekeeper img {
+        width: 288px;
+        height: 276px;
+        border-radius: 24px;
+    }
+
+    .Line {
+        width: 650px;
+        border: 1px solid black;
+    }
+
+    .Information {
+        color: black;
+        font-size: 50px;
+        font-family: Inter;
+        font-weight: 700;
+    }
+
+    .Detail {
+        width: 650px;
+        height: 416px;
+    }
+
+    .NameHousekeeper {
+        color: black;
+        font-size: 50px;
+        font-family: Inter;
+        font-weight: 700;
+    }
+
+    .Description {
+        color: black;
+        font-size: 50px;
+        font-family: Inter;
+        font-weight: 700;
+    }
+
+    .NameService {
+        text-align: center;
+        margin: 20px 0;
+        width: 650px;
+        height: 40px;
+        background-color: black;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 20px;
+        font-family: Inter;
+        font-weight: 700;
+    }
+
+    .Description {
+        color: black;
+        font-size: 30px;
+        font-family: Inter;
+        font-weight: 400;
+    }
+
+    .Rent-right {
+        width: 320px;
+        height: 330px;
+        background: white;
+        border-radius: 20px;
+        border: 1px black solid;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .price {
+        width: 343px;
+        height: 54px;
+        color: #FF0000;
+        font-size: 30px;
+        font-family: Inter;
+        font-weight: 700;
+        padding: 5px 10px;
+    }
+
+    .Ready {
+        color: #3EC100;
+        font-size: 40px;
+        font-family: Inter;
+        font-weight: 700;
+        margin-left: 80px;
+    }
+    .navbar-nav {
+        width: 165px;
+    }
+    .d-flex.flex-row.user-info {
+        gap: 15px;
+    }
+</style>
+<script>
+    document.getElementById('commentForm').addEventListener('submit', function(event) {
+        var commentContent = document.getElementById('commentContent').value.trim();
+        if (commentContent === "") {
+            alert("Feedback cannot be empty");
+            event.preventDefault();
+        }
+    });
+</script>

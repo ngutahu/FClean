@@ -1,0 +1,362 @@
+﻿@model ProjectFClean.Models.RentViewModel
+    @{ 
+        Layout = "~/Views/Shared/_LayoutRentView.cshtml";
+    }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Template Stylesheet -->
+    <link href="~/css/style.css" rel="stylesheet">
+    <!-- DateTimePicker Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-xxl bg-white p-0">
+        <div class="container pt-5">
+            <h2 class="text-center mb-4">Rent Details</h2>
+            <form id="rentForm">
+                <div class="row">
+                    <!-- Renter Information -->
+                    <div class="col-md-6">
+                        <h4>Renter Information</h4>
+                        <table class="table">
+                            @if (Model.Renter != null && Model.Renter.Account != null)
+                            {
+                                <tr>
+                                    <td><strong>Name:</strong></td>
+                                    <td>@Model.Renter.Account.Name</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Phone:</strong></td>
+                                    <td>@Model.Renter.Account.Phone</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Address:</strong></td>
+                                    <td>@Model.Renter.Address</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Money:</strong></td>
+                                    <td>@Model.Renter.Account.Money</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+
+                    <!-- Housekeeper Information -->
+                    <div class="col-md-6">
+                        <h4>Housekeeper Information</h4>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td>@Model.Housekeeper.Account.Name</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phone:</strong></td>
+                                <td>@Model.Housekeeper.Account.Phone</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Address:</strong></td>
+                                <td>@Model.Housekeeper.Address</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Age:</strong></td>
+                                <td>@Model.Housekeeper.Age</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender:</strong></td>
+                                <td>@Model.Housekeeper.Gender</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Skill:</strong></td>
+                                <td>@Model.Housekeeper.Skill</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Price:</strong></td>
+                                <td>@Model.Housekeeper.Price</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Compact Information -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Compact Information</h4>
+                        <!-- Signed Date -->
+                        <p><strong>Signed Date:</strong> @Model.Compact.Signed_Date</p>
+                        <!-- Choose a Service -->
+                        <div class="col-md-12">
+                            <label for="service">Choose a service:</label>
+                            <select id="service" class="form-select mb-3" name="Compact.ServiceID">
+                                <option value="1">Cleaning</option>
+                                <option value="2">Child care</option>
+                                <option value="3">Elderly care</option>
+                                <option value="4">Patient care</option>
+                                <option value="5">Home cooking</option>
+                                <option value="6">Grocery</option>
+                                <option value="7">Laundry</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="start-date">Start Date:</label>
+                                <input type="datetime-local" class="form-control" id="start-date" name="Compact.Start_Date" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="end-date">End Date:</label>
+                                <input type="datetime-local" class="form-control" id="end-date" name="Compact.End_Date" />
+                            </div>
+                        </div>
+                        <!-- Work Time and Total Price -->
+                        <p><strong>Work Time:</strong> <span id="workTime"></span></p>
+                        <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
+                    </div>
+                </div>
+            </form>
+            <!-- Submit Button -->
+            <div class="text-center mt-4">
+                <button id="submitBtn" class="btn btn-danger" type="submit">Submit</button>
+                <div id="errorMessage" class="text-danger"></div>
+            </div>
+
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- DateTimePicker JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- Your Custom JavaScript -->
+    <script>
+        var work_Time = 0;
+        var total_Price = 0;
+        $(function () {
+            $('#start-date').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                inline: true,
+                sideBySide: true,
+                icons: {
+                    time: "bi bi-clock",
+                    date: "bi bi-calendar",
+                    up: "bi bi-arrow-up",
+                    down: "bi bi-arrow-down",
+                    previous: "bi bi-chevron-left",
+                    next: "bi bi-chevron-right",
+                    today: "bi bi-pin",
+                    clear: "bi bi-trash",
+                    close: "bi bi-x"
+                }
+            });
+            $('#end-date').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                inline: true,
+                sideBySide: true,
+                icons: {
+                    time: "bi bi-clock",
+                    date: "bi bi-calendar",
+                    up: "bi bi-arrow-up",
+                    down: "bi bi-arrow-down",
+                    previous: "bi bi-chevron-left",
+                    next: "bi bi-chevron-right",
+                    today: "bi bi-pin",
+                    clear: "bi bi-trash",
+                    close: "bi bi-x"
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            // Function to calculate work time and total price
+            function calculateWorkTimeAndPrice() {
+                var startDate = new Date($('#start-date').val());
+                var endDate = new Date($('#end-date').val());
+
+                // Check if start date and end date are valid
+                if (startDate && endDate && startDate < endDate) {
+                    var diffMilliseconds = endDate - startDate;
+                    var diffHours = diffMilliseconds / (1000 * 60 * 60);
+                    work_Time = diffHours;
+                    var diffDays = Math.floor(diffHours / 24);
+                    var remainingHours = diffHours % 24;
+                    var remainingMinutes = Math.round((remainingHours - Math.floor(remainingHours)) * 60);
+                    var workTime = "";
+
+                    if (diffDays > 0) {
+                        workTime += diffDays + " days ";
+                    }
+                    workTime += Math.floor(remainingHours) + " hours " + remainingMinutes + " minutes";
+
+                    $('#workTime').text(workTime);
+
+                    var housekeeperPrice = parseInt("@Model.Housekeeper.Price");
+                    var totalPrice = diffHours * housekeeperPrice;
+                    total_Price = totalPrice;
+                    $('#totalPrice').text(totalPrice.toFixed(2) + " VND");
+
+                } else {
+                    // Display error message if end date is before start date
+                    $('#workTime').text("Invalid Date Range");
+                    $('#totalPrice').text("Invalid Date Range");
+                }
+            }
+
+            // Calculate work time and total price when start date or end date changes
+            $('#start-date, #end-date').change(function () {
+                calculateWorkTimeAndPrice();
+            });
+
+            // Submit form when submit button is clicked
+            $('#submitBtn').click(function () {
+                if (!validateCompactInfo()) {
+                    alert("Please fill in all fields in Compact Information before submitting.");
+                    return; // Ngăn form từ việc được gửi đi
+                }
+            // Validate form data before submitting (if needed)
+            if (validateForm()) {
+                var totalPrice = parseFloat($('#totalPrice').text());
+                var renterMoney = parseFloat("@Model.Renter.Account.Money");
+
+
+                 if (totalPrice > renterMoney) {
+                     $('#errorMessage').text("Not enough money, please top up your account.");
+                     return;
+                  }
+                var formData = {
+                    RID: "@Model.Compact.RID",
+                    HID: "@Model.Compact.HID",
+                    Signed_Date: "@Model.Compact.Signed_Date",
+                    ServiceID: $("#service").val(),
+                    Start_Date: $("#start-date").val(),
+                    End_Date: $("#end-date").val(),
+                    Work_Time: work_Time,
+                    @*Status: "@Model.Compact.Status"*@
+                    //Work_Time: $("#workTime").val(),
+                    Total_Price: total_Price
+                };
+
+                // Send data to the controller via AJAX
+                $.ajax({
+                    url: "@Url.Action("SubmitRent", "Booking")",
+                    type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        // Handle success response
+                        // For example, redirect to another page
+                        alert("Rent submitted successfully!");
+                        window.location.href = "@Url.Action("Index", "Home")";
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                    }
+                });
+            }
+        });
+            function validateCompactInfo() {
+                var service = $('#service').val();
+                var startDate = $('#start-date').val();
+                var endDate = $('#end-date').val();
+
+                // Kiểm tra xem các trường có rỗng hay không
+                if (service === "" || startDate === "" || endDate === "") {
+                    return false; // Trường nào rỗng thì trả về false
+                }
+
+                return true; // Trường hợp các trường đã được điền đầy đủ
+            }
+            // Example form validation function
+            function validateForm() {
+                var startDate = new Date($('#start-date').val());
+                var endDate = new Date($('#end-date').val());
+
+                // Example validation: Start date should be before end date
+                if (startDate >= endDate) {
+                    alert("Start date must be before end date.");
+                    return false;
+                }
+
+                // Add more validation as needed
+                // ...
+
+                return true;
+            }
+        });
+        
+
+    </script>
+
+</body>
+</html>
+<style>
+    #errorMessage {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+        text-align: center;
+        color: #333;
+    }
+
+    .renter-info,
+    .housekeeper-info,
+    .compact-info {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 20px;
+    }
+
+    .submit-btn {
+        display: block;
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        background-color: green;
+    }
+</style>
